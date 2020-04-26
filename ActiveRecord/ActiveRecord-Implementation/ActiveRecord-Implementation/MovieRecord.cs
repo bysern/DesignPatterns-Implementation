@@ -102,6 +102,25 @@ namespace ActiveRecord_Implementation
             }
         }
 
+        public void Remove()
+        {
+            using (NpgsqlConnection conn = new NpgsqlConnection(ConnectionString))
+            {
+                conn.Open();
+                // If the movie has any copies this operation will fail
+                using (var command = new NpgsqlCommand("DELETE FROM movies WHERE movie_id = @ID", conn))
+                {
+                    command.Parameters.AddWithValue("@ID", ID);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void ChangePrice(double new_price)
+        {
+            Price = new_price; // Change price of object in memory
+            Save(); // Changes price of row in database
+        }
 
 
     }

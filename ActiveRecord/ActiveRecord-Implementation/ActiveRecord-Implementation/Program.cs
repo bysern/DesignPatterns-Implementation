@@ -24,6 +24,20 @@ namespace ActiveRecord_Implementation
 
             Console.WriteLine(MovieRecord.GetByID(123).ToString());
 
+            // We adjust the price
+            mr.ChangePrice(4.5);
+            Console.WriteLine(MovieRecord.GetByID(123).ToString());
+
+
+
+            // Object is removed from the database
+            mr.Remove();
+            if (MovieRecord.GetByID(123) == null)
+            {
+                Console.WriteLine("Object is removed from the database");
+            }
+
+
         }
     }
 }

@@ -57,5 +57,19 @@ namespace ActiveRecord_Implementation
                 }
             }
         }
+
+
+        public void Remove()
+        {
+            using (NpgsqlConnection conn = new NpgsqlConnection(ConnectionString))
+            {
+                conn.Open();
+                using (var command = new NpgsqlCommand("DELETE FROM copies WHERE copy_id = @ID", conn))
+                {
+                    command.Parameters.AddWithValue("@ID", ID);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
