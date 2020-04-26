@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ActiveRecord_Implementation
 {
@@ -10,6 +6,24 @@ namespace ActiveRecord_Implementation
     {
         static void Main(string[] args)
         {
+            //fetch from db
+            MovieRecord mr = MovieRecord.GetByID(2);
+            Console.WriteLine(mr.ToString());
+
+            //displaying all movies
+            mr.GetAllMovies();
+            foreach (var movie in mr.Movies)
+            {
+                Console.WriteLine(movie);
+            }
+
+
+            // creating and saving new object to database
+            mr = new MovieRecord(123, "The Last Samurai", 2003, 10);
+            mr.Save();
+
+            Console.WriteLine(MovieRecord.GetByID(123).ToString());
+
         }
     }
 }
