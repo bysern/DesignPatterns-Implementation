@@ -1,5 +1,6 @@
 ﻿using Npgsql;
 using System;
+using System.Collections.Generic;
 
 namespace DBProjectRentalStore
 {
@@ -7,6 +8,8 @@ namespace DBProjectRentalStore
     {
         private static readonly string ConnectionString =
         System.Configuration.ConfigurationManager.ConnectionStrings["Rental"].ToString();
+        public List<Client> Clients = new List<Client>();
+
 
         //singleton
         public static ClientMapper Instance { get; } = new ClientMapper();
@@ -75,6 +78,34 @@ namespace DBProjectRentalStore
 
                 }
 
+            }
+
+        }
+
+        public List<Client> GetAllClients()
+        {
+            using (NpgsqlConnection conn = new NpgsqlConnection(ConnectionString))
+            {
+
+                conn.Open();
+                using (var command = new NpgsqlCommand("SELECT * FROM clients", conn))
+                {
+                    NpgsqlDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+
+                        while (reader.Read())
+                        {
+                            int id = (int)reader["client_id"];
+                            string FName = (string)reader["first_name"];
+                            string LName = (string)reader["last_name"];
+                            DateTime birthday = Convert.ToDateTime(reader["birthday"]);
+
+                            Clients.Add(new Client(id, FName, LName, birthday));
+                        }
+                    }
+                }
+                return Clients;
             }
         }
     }

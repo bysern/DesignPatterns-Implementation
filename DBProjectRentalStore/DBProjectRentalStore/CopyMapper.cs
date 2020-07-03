@@ -52,9 +52,7 @@ namespace DBProjectRentalStore
                 conn.Open();
                 // This is an UPSERT operation - if record doesn't exist in the database it is created, otherwise it is updated
                 using (var command = new NpgsqlCommand("INSERT INTO copies(copy_id, available, movie_id) " +
-                    "VALUES (@ID, @available, @movieId) " +
-                    "ON CONFLICT (copy_id) DO UPDATE " +
-                    "SET available = @available, movie_id = @movieId", conn))
+                    "VALUES (@ID, @available, @movieId) ", conn))
                 {
                     command.Parameters.AddWithValue("@ID", copy.ID);
                     command.Parameters.AddWithValue("@available", copy.Available);
